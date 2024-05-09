@@ -26,8 +26,10 @@ def some_view(request, some_int, some_str):
 
 
 class MyView(View):
+
     def get(self, request, year):
         return HttpResponse(f"<h1> regular expression view some year: {year} </h1>")
+
 
 
 # class User:
@@ -58,6 +60,7 @@ def home_view(request):
         request=request,
         template_name="home.html",
     )
+
 
 comments = [
     {
