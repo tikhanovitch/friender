@@ -2,84 +2,22 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 
-# Create your views here.
-
-
-def main_view(request):
-    return HttpResponse("<h1> rules of friender </h1>")
-
-
-def info_view(request):
-    return HttpResponse("<h1> information about establishments  </h1>")
-
-
-def some_view(request, some_int, some_str):
-    return HttpResponse(f"<h1> hello django app some int: {some_int} some_str: {some_str} </h1>")
-
-
-
-# def some_new_view(request, year):
-#     return HttpResponse(f"<h1> regular expression view some year: {year} </h1>")
-
-
-# class base view
-
-
-class MyView(View):
-
-    def get(self, request, year):
-        return HttpResponse(f"<h1> regular expression view some year: {year} </h1>")
-
-
-
-# class User:
-#     def __init__(self, name: str, age: int):
-#         self.name = name
-#         self.age = age
-#
-#     def get_info_user(self):
-#         return f"name: {self.name} age: {self.age}"
-
-
-# def some_template_view(request):
-#     # context = {
-#     #     "some_arg": "hello world",
-#     #     "some_list": [4, 2, 6, 1, 15, 16, 21],
-#     #     "user": User("John", 45)
-#     # }
-#
-#     return render(
-#         request=request,
-#         template_name="base.html",
-#         # context=context
-#     )
-
-
-def home_view(request):
-    return render(
-        request=request,
-        template_name="home.html",
-    )
-
 
 comments = [
     {
     "number": 1,
-    "user_id": 1,
-    "name": "John",
-    "comment": "some John comment",
+    "name": "User 1",
+    "comment": "some User 1 comment",
     },
     {
     "number": 2,
-    "user_id": 2,
-    "name": "Ann",
-    "comment": "some Ann comment",
+    "name": "User 2",
+    "comment": "some User 2 comment",
     },
     {
     "number": 3,
-    "user_id": 3,
-    "name": "Peter",
-    "comment": "some Peter comment",
+    "name": "User 3",
+    "comment": "some User 3 comment",
     },
 ]
 
@@ -91,5 +29,75 @@ def user_comment_view(request):
     return render(
         request=request,
         template_name="user_comment.html",
+        context=context
+    )
+
+
+def main_view(request):
+    return render(
+        request=request,
+        template_name="main.html",
+    )
+
+
+hotels = [
+    {
+    "number": 1,
+    "name": "Hotel № 1",
+    "adress": "Hotel № 1 adress",
+    "stars": "****",
+    },
+    {
+    "number": 2,
+    "name": "Hotel № 2",
+    "adress": "Hotel № 2 adress",
+    "stars": "****",
+    },
+    {
+    "number": 3,
+    "name": "Hotel № 3",
+    "adress": "Hotel № 3 adress",
+    "stars": "***",
+    },
+]
+
+
+def hotels_view(request):
+    context = {
+        "hotels": hotels
+    }
+    return render(
+        request=request,
+        template_name="hotels.html",
+        context=context
+    )
+
+
+users = [
+    {
+    "number": 1,
+    "name": "User 1",
+    "age": 35,
+    },
+    {
+    "number": 2,
+    "name": "User 2",
+    "age": 23,
+    },
+    {
+    "number": 3,
+    "name": "User 3",
+    "age": 27,
+    },
+]
+
+
+def users_view(request):
+    context = {
+        "users": users
+    }
+    return render(
+        request=request,
+        template_name="users.html",
         context=context
     )

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %} Отели {% endblock %}
+
+{% block content %}
+
+    <h2> Информация об отелях </h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">name</th>
+      <th scope="col">adress</th>
+      <th scope="col">stars</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for hotel in hotels %}
+    <tr>
+      <th scope="row">{{hotel.number}}</th>
+      <td>{{hotel.name}}</td>
+      <td>{{hotel.adress}}</td>
+      <td>{{hotel.stars}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
