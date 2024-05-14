@@ -31,6 +31,10 @@ class Person(User):
 class HotelOwner(User):
     owner_exp_status = models.IntegerField(null=True)
 
+    # class Meta:
+    #     verbose_name = "Владельцы"
+    #     verbose_name_plural = "Владельцы"
+
 
 class Profile(models.Model):
     photo = models.ImageField(null=True, blank=True)
