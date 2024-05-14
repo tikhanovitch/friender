@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 
+from .models import Person, Hotel
 
 comments = [
     {
@@ -62,17 +63,6 @@ hotels = [
 ]
 
 
-def hotels_view(request):
-    context = {
-        "hotels": hotels
-    }
-    return render(
-        request=request,
-        template_name="hotels.html",
-        context=context
-    )
-
-
 users = [
     {
     "number": 1,
@@ -99,5 +89,27 @@ def users_view(request):
     return render(
         request=request,
         template_name="users.html",
+        context=context
+    )
+
+
+def persons_view(request):
+    context = {
+        "persons": Person.objects.all().prefetch_related("hotel_comments").prefetch_related("hobbies")
+    }
+    return render(
+        request=request,
+        template_name="persons.html",
+        context=context
+    )
+
+
+def hotels_view(request):
+    context = {
+        "hotels": Hotel.objects.all()
+    }
+    return render(
+        request=request,
+        template_name="hotels.html",
         context=context
     )

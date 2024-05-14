@@ -13,8 +13,15 @@ class User(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=["last_name", "first_name"], name="last_first_name_idx"),
+            models.Index(fields=["first_name"], name="first_name_idx"),
+            models.Index(fields=["last_name"], name="last_name_idx"),
+        ]
+
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.first_name} {self.last_name} {self.age}"
 
 
 class Person(User):
@@ -27,7 +34,7 @@ class HotelOwner(User):
 
 class Profile(models.Model):
     photo = models.ImageField(null=True, blank=True)
-    id_card_number = models.ImageField(null=True)
+    id_card_number = models.IntegerField(null=True)
     serial = models.CharField(max_length=30, null=True)
     person_id = models.OneToOneField(
         to="User",
@@ -35,6 +42,9 @@ class Profile(models.Model):
         null=True,
         related_name="profile"
     )
+
+    def __str__(self):
+        return f"{self.person_id}"
 
 
 class Hotel(models.Model):
@@ -49,8 +59,15 @@ class Hotel(models.Model):
         related_name="hotels",
     )
 
+    class Meta:
+        indexes = [
+            models.Index(fields=["name"], name="name_idx"),
+            models.Index(fields=["address"], name="address_idx"),
+            models.Index(fields=["stars"], name="stars_idx"),
+        ]
+
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.name} <{self.owners}>"
 
 
 class BookInfo(models.Model):
@@ -69,6 +86,9 @@ class BookInfo(models.Model):
         null=True,
         related_name='booking_info'
     )
+
+    def __str__(self):
+        return f" {self.persons}: <{self.detail}> <{self.hotels}>"
 
 
 class Comment(models.Model):
@@ -95,7 +115,7 @@ class HotelsComment(Comment):
     )
 
     def __str__(self):
-        return f"{self.comment}"
+        return f"'{self.comment}' <{self.persons}>"
 
 
 class PersonComment(Comment):

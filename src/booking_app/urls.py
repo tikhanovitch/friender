@@ -3,7 +3,8 @@ from .views import (
     user_comment_view,
     main_view,
     hotels_view,
-    users_view
+    users_view,
+    persons_view,
 )
 
 urlpatterns = [
@@ -11,5 +12,5 @@ urlpatterns = [
     path('hotels', hotels_view, name="hotels"),
     path('user_comment', user_comment_view, name="user_comment"),
     path('users', users_view, name="users"),
-
+    path('persons', persons_view, name="persons"),
 ]
