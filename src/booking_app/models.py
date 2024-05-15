@@ -21,7 +21,7 @@ class User(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} {self.age}"
+        return f"{self.first_name} {self.last_name} "
 
 
 class Person(User):
@@ -37,9 +37,9 @@ class HotelOwner(User):
 
 
 class Profile(models.Model):
-    photo = models.ImageField(null=True, blank=True)
-    id_card_number = models.IntegerField(null=True)
-    serial = models.CharField(max_length=30, null=True)
+    photo = models.ImageField(null=True, blank=True, verbose_name="Фотография")
+    id_card_number = models.IntegerField(null=True, verbose_name="Номер паспорта")
+    serial = models.CharField(max_length=30, null=True, verbose_name="Серия паспорта")
     person_id = models.OneToOneField(
         to="User",
         on_delete=models.CASCADE,
@@ -71,7 +71,7 @@ class Hotel(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.name} <{self.owners}>"
+        return f"{self.name}"
 
 
 class BookInfo(models.Model):
@@ -92,7 +92,7 @@ class BookInfo(models.Model):
     )
 
     def __str__(self):
-        return f" {self.persons}: <{self.detail}> <{self.hotels}>"
+        return f"{self.persons}"
 
 
 class Comment(models.Model):
@@ -119,7 +119,7 @@ class HotelsComment(Comment):
     )
 
     def __str__(self):
-        return f"'{self.comment}' <{self.persons}>"
+        return f"{self.comment}"
 
 
 class PersonComment(Comment):
