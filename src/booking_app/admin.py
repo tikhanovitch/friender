@@ -12,6 +12,25 @@ class UserAdmin(admin.ModelAdmin):
         "first_name", "last_name", "age",
         "sex", "created_at", "updated_at",
     ]
+    fieldsets = [
+        (
+            None,
+            {
+                "fields": ["first_name", "last_name"],
+            },
+        ),
+        (
+            "Advanced options",
+            {
+                "classes": ["collapse"],
+                "fields": ["age", "sex"],
+            },
+        ),
+    ]
+    list_filter = ["first_name", "last_name", "age", "sex"]
+    list_per_page = 10
+    search_fields = ["first_name", "last_name", "age"]
+    list_editable = ["age"]
 
 
 class PersonAdmin(admin.ModelAdmin):
