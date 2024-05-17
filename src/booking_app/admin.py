@@ -7,6 +7,31 @@ from .models import (
 )
 
 
+class BookInfoInline(admin.TabularInline):
+    model = BookInfo
+    extra = 1
+
+
+class HotelsCommentInLine(admin.TabularInline):
+    model = HotelsComment
+
+
+class HobbyInline(admin.TabularInline):
+    model = Hobby.owners.through
+
+
+class ProfileInline(admin.TabularInline):
+    model = Profile
+
+
+class PersonCommentInline(admin.TabularInline):
+    model = PersonComment
+
+
+class HotelInline(admin.TabularInline):
+    model = Hotel
+
+
 class UserAdmin(admin.ModelAdmin):
     list_display = [
         "first_name", "last_name", "age",
@@ -31,6 +56,10 @@ class UserAdmin(admin.ModelAdmin):
     list_per_page = 10
     search_fields = ["first_name", "last_name", "age"]
     list_editable = ["age"]
+    inlines = [
+        HobbyInline,
+        ProfileInline,
+    ]
 
 
 class PersonAdmin(admin.ModelAdmin):
@@ -45,13 +74,17 @@ class HotelOwnerAdmin(admin.ModelAdmin):
         "first_name", "last_name", "age",
         "sex", "created_at", "updated_at",
     ]
+    inlines = [
+        HotelInline,
+        ProfileInline,
+    ]
 
 
 class ProfileAdmin(admin.ModelAdmin):
     pass
     list_display = [
-        "photo", "id_card_number",
-        "serial", "person_id",
+        "person_id", "photo",
+        "serial", "id_card_number",
     ]
 
 
@@ -59,6 +92,11 @@ class HotelAdmin(admin.ModelAdmin):
     list_display = [
         "name", "address", "stars",
         "rating", "owners",
+    ]
+    inlines = [
+        BookInfoInline,
+        HotelsCommentInLine,
+        PersonCommentInline,
     ]
 
 
