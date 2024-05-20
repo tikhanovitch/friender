@@ -16,23 +16,27 @@ class BookInfoInline(admin.TabularInline):
 
 class HotelsCommentInLine(admin.TabularInline):
     model = HotelsComment
+    extra = 1  # количество отбражаемых пустых полей
 
 
 class HobbyInline(admin.TabularInline):
     model = Hobby.owners.through
-    extra = 1  # количество отбражаемых пустых полей
+    extra = 1
 
 
 class ProfileInline(admin.TabularInline):
     model = Profile
+    extra = 1
 
 
 class PersonCommentInline(admin.TabularInline):
     model = PersonComment
+    extra = 1
 
 
 class HotelInline(admin.TabularInline):
     model = Hotel
+    extra = 1
 
 
 #  _____Actions_____

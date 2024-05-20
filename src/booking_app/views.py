@@ -123,5 +123,24 @@ def hotels_delete_view(request):
         return HttpResponse(f"<h1> {users} </h1>")
 
 
-def book_room_view(request, hotel_name, user_id, room_number):
-    pass
+def book_room_view(request, hotel_id, user_id, room_number):
+    hotel = Hotel.objects.get(pk=hotel_id)
+    room = Room.objects.get(hotel=hotel, number=room_number)
+
+    if room.is_booked:
+        return HttpResponse("Room is already booked.", status=400)
+
+    booking = Booking.objects.create(
+        start_date=request.POST['start_date'],
+        end_date=request.POST['end_date'],
+        customer_full_name=f"{request.POST['first_name']} {request.POST['last_name']}",
+        room=room,
+        user_id=user_id
+    )
+
+    room.is_booked = True
+    room.save()
+
+    return HttpResponse("Booking successful")
+
+# res = book_room_view(None, hotel_id=1, user_id=1, room_number=1)

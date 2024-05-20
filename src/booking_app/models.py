@@ -14,6 +14,7 @@ class User(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
+        verbose_name_plural = "User"
         indexes = [
             models.Index(fields=["last_name", "first_name"], name="last_first_name_idx"),
             models.Index(fields=["first_name"], name="first_name_idx"),
@@ -27,17 +28,19 @@ class User(models.Model):
 class Person(User):
     guest_rating = models.IntegerField(null=True)
 
+    class Meta:
+        verbose_name_plural = "Person"
+
 
 class HotelOwner(User):
     owner_exp_status = models.IntegerField(null=True)
 
-    # class Meta:
-    #     verbose_name = "Владельцы"
-    #     verbose_name_plural = "Владельцы"
+    class Meta:
+        verbose_name_plural = "Hotel Owner"
 
 
 class Profile(models.Model):
-    photo = models.ImageField(null=True, blank=True, verbose_name="Фотография")
+    photo = models.ImageField(null=True, blank=True)  # ,verbose_name="Фотография"
     id_card_number = models.IntegerField(null=True, verbose_name="Номер паспорта")
     serial = models.CharField(max_length=30, null=True, verbose_name="Серия паспорта")
     person_id = models.OneToOneField(
@@ -46,6 +49,9 @@ class Profile(models.Model):
         null=True,
         related_name="profile"
     )
+
+    class Meta:
+        verbose_name_plural = "Profile"
 
     def __str__(self):
         return f"{self.person_id}"
@@ -64,6 +70,7 @@ class Hotel(models.Model):
     )
 
     class Meta:
+        verbose_name_plural = "Hotel"
         indexes = [
             models.Index(fields=["name"], name="name_idx"),
             models.Index(fields=["address"], name="address_idx"),
@@ -90,6 +97,9 @@ class BookInfo(models.Model):
         null=True,
         related_name='booking_info'
     )
+
+    class Meta:
+        verbose_name_plural = "Book Info"
 
     def __str__(self):
         return f"{self.persons}"
@@ -118,6 +128,9 @@ class HotelsComment(Comment):
         related_name="hotel_comments"
     )
 
+    class Meta:
+        verbose_name_plural = "Hotels Comment"
+
     def __str__(self):
         return f"{self.comment}"
 
@@ -137,6 +150,9 @@ class PersonComment(Comment):
         related_name="person_comments"
     )
 
+    class Meta:
+        verbose_name_plural = "Person comment"
+
     def __str__(self):
         return f"{self.comment}"
 
@@ -148,6 +164,9 @@ class Hobby(models.Model):
         to="User",
         related_name="hobbies"
     )
+
+    class Meta:
+        verbose_name_plural = "Hobby"
 
     def __str__(self):
         return f" {self.name}"
@@ -162,6 +181,9 @@ class Room(models.Model):
         related_name='rooms',
     )
 
+    class Meta:
+        verbose_name_plural = "Room"
+
     def __str__(self):
         return f" {self.number} {self.hotel}"
 
@@ -175,6 +197,9 @@ class Booking(models.Model):
         on_delete=models.CASCADE,
         related_name='bookings',
     )
+
+    class Meta:
+        verbose_name_plural = "Booking"
 
     def __str__(self):
         return f" {self.start_date} {self.end_date}"
