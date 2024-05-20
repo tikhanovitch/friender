@@ -1,8 +1,9 @@
 from django.http import HttpResponse
-from django.shortcuts import render
 from django.views import View
+from django.shortcuts import render
+from django.db import transaction
 
-from .models import Person, Hotel
+from .models import Person, Hotel, User, Booking, Room
 
 comments = [
     {
@@ -113,3 +114,14 @@ def hotels_view(request):
         template_name="hotels.html",
         context=context
     )
+
+
+def hotels_delete_view(request):
+    with transaction.atomic():
+        users = User.objects.filter(hobbies__name="Puzzl")
+        print(users)
+        return HttpResponse(f"<h1> {users} </h1>")
+
+
+def book_room_view(request, hotel_name, user_id, room_number):
+    pass

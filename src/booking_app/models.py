@@ -151,3 +151,30 @@ class Hobby(models.Model):
 
     def __str__(self):
         return f" {self.name}"
+
+
+class Room(models.Model):
+    number = models.CharField(max_length=10)
+    is_booked = models.BooleanField(default=False)
+    hotel = models.ForeignKey(
+        to='Hotel',
+        on_delete=models.CASCADE,
+        related_name='rooms',
+    )
+
+    def __str__(self):
+        return f" {self.number} {self.hotel}"
+
+
+class Booking(models.Model):
+    start_date = models.DateField()
+    end_date = models.DateField()
+    customer_full_name = models.CharField(max_length=255)
+    room = models.ForeignKey(
+        to=Room,
+        on_delete=models.CASCADE,
+        related_name='bookings',
+    )
+
+    def __str__(self):
+        return f" {self.start_date} {self.end_date}"
