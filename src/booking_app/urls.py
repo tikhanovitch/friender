@@ -7,6 +7,7 @@ from .views import (
     persons_view,
     hotels_delete_view,
     book_room_view,
+    hotel_add,
 )
 
 urlpatterns = [
@@ -17,4 +18,5 @@ urlpatterns = [
     path('persons', persons_view, name="persons"),
     path('hotels_del', hotels_delete_view, name="hotels_del"),
     path('book_room', book_room_view, name="book_room"),
+    path('hotel_add_form', hotel_add, name="hotel_add_form"),
 ]

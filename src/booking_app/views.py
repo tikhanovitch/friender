@@ -1,8 +1,9 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.views import View
 from django.shortcuts import render
 from django.db import transaction
 
+from .forms import HotelForm
 from .models import Person, Hotel, User, Booking, Room
 
 comments = [
@@ -123,24 +124,48 @@ def hotels_delete_view(request):
         return HttpResponse(f"<h1> {users} </h1>")
 
 
-def book_room_view(request, hotel_id, user_id, room_number):
+def hotel_add(request):
+    if request.method == "POST":
+        hotel_form = HotelForm(request.POST)
+        if hotel_form.is_valid():
+            Hotel.objects.create(
+                name=request.POST["name"],
+                stars=request.POST["stars"]
+            )
+            return HttpResponseRedirect("/booking/hotels")
+        else:
+            hotel_form = HotelForm()
+            return HttpResponseForbidden(request)
+    else:
+        hotel_form = HotelForm()
+    context = {
+        "form": hotel_form
+    }
+    return render(
+        request=request,
+        template_name="hotel_add_form.html",
+        context=context
+    )
+
+
+def book_room_view(request, hotel_id=1, user_id=1, room_number=1):
     hotel = Hotel.objects.get(pk=hotel_id)
     room = Room.objects.get(hotel=hotel, number=room_number)
 
     if room.is_booked:
         return HttpResponse("Room is already booked.", status=400)
 
-    booking = Booking.objects.create(
-        start_date=request.POST['start_date'],
-        end_date=request.POST['end_date'],
-        customer_full_name=f"{request.POST['first_name']} {request.POST['last_name']}",
-        room=room,
-        user_id=user_id
-    )
+    with transaction.atomic():
+        booking = Booking.objects.create(
+            start_date=request.POST['start_date'],
+            end_date=request.POST['end_date'],
+            customer_full_name=f"{request.POST['first_name']} {request.POST['last_name']}",
+            room=room,
+            user_id=user_id
+        )
 
     room.is_booked = True
     room.save()
 
     return HttpResponse("Booking successful")
 
-# res = book_room_view(None, hotel_id=1, user_id=1, room_number=1)
