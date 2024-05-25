@@ -1,5 +1,7 @@
 from django.db import models
 
+from .validators import validate_hotel_stars, validate_user_age
+
 
 class User(models.Model):
     SEX_PERSON = {
@@ -8,7 +10,7 @@ class User(models.Model):
     }
     first_name = models.CharField(max_length=30, null=True)
     last_name = models.CharField(max_length=50, null=True)
-    age = models.PositiveIntegerField()
+    age = models.PositiveIntegerField(validators=[validate_user_age])
     sex = models.CharField(max_length=1, choices=SEX_PERSON, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -60,7 +62,7 @@ class Profile(models.Model):
 class Hotel(models.Model):
     name = models.CharField(max_length=40, null=True)
     address = models.CharField(max_length=40, null=True)
-    stars = models.IntegerField(null=True)
+    stars = models.IntegerField(null=True, validators=[validate_hotel_stars])
     rating = models.FloatField(null=True)
     owners = models.ForeignKey(
         to="HotelOwner",

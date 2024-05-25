@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.db import transaction
 from django.urls import reverse
 
-from .forms import HotelAddForm
+from .forms import HotelModelForm, UserModelForm
 from .models import Person, Hotel, User, Booking, Room
 
 comments = [
@@ -127,20 +127,14 @@ def hotels_delete_view(request):
 
 def hotel_add(request):
     if request.method == "POST":
-        hotel_form = HotelAddForm(request.POST)
-        if hotel_form.is_valid():
-            Hotel.objects.create(
-                name=request.POST["name"],
-                stars=request.POST["stars"]
-            )
+        form = HotelModelForm(request.POST)
+        if form.is_valid():
+            form.save()
             return HttpResponseRedirect(reverse("hotels"))
-        else:
-            hotel_form = HotelAddForm()
-            return HttpResponseForbidden(request)
     else:
-        hotel_form = HotelAddForm()
+        form = HotelModelForm()
     context = {
-        "form": hotel_form
+        "form": form
     }
     return render(
         request=request,
@@ -149,7 +143,27 @@ def hotel_add(request):
     )
 
 
-def book_room_view(request, hotel_id=1, user_id=1, room_number=1):
+def user_add(request):
+    if request.method == "POST":
+        form = UserModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse("users"))
+    else:
+        form = UserModelForm()
+    context = {
+        "form": form
+    }
+    return render(
+        request=request,
+        template_name="user_add_form.html",
+        context=context
+    )
+
+
+
+
+def book_room_view(request, hotel_id, user_id, room_number):
     hotel = Hotel.objects.get(pk=hotel_id)
     room = Room.objects.get(hotel=hotel, number=room_number)
 

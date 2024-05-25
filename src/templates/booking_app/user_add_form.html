@@ -4,13 +4,13 @@
 
 {% load crispy_forms_tags %}
 
-{% block title %} Add hotel page {% endblock %}
+{% block title %} Add User page {% endblock %}
 
 {% block content %}
 
-    <h2> add hotel </h2>
+    <h2> add user </h2>
 
-    <form action="/booking/hotel_add_form" method="POST">
+    <form action="/booking/user_add_form" method="POST">
         {% csrf_token %}
         {{ form |crispy }}
 <!--    <label for="hotel_name">hotel name: </label>-->
