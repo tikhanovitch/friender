@@ -6,7 +6,7 @@
 {% block content %}
 
     <h2> add hotel </h2>
-    <form action="/booking/hotels" method="POST">
+    <form action="/booking/hotel_add_form" method="POST">
         {% csrf_token %}
         {{ form }}
 <!--    <label for="hotel_name">hotel name: </label>-->

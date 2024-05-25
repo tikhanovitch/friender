@@ -2,8 +2,9 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidde
 from django.views import View
 from django.shortcuts import render
 from django.db import transaction
+from django.urls import reverse
 
-from .forms import HotelForm
+from .forms import HotelAddForm
 from .models import Person, Hotel, User, Booking, Room
 
 comments = [
@@ -126,18 +127,18 @@ def hotels_delete_view(request):
 
 def hotel_add(request):
     if request.method == "POST":
-        hotel_form = HotelForm(request.POST)
+        hotel_form = HotelAddForm(request.POST)
         if hotel_form.is_valid():
             Hotel.objects.create(
                 name=request.POST["name"],
                 stars=request.POST["stars"]
             )
-            return HttpResponseRedirect("/booking/hotels")
+            return HttpResponseRedirect(reverse("hotels"))
         else:
-            hotel_form = HotelForm()
+            hotel_form = HotelAddForm()
             return HttpResponseForbidden(request)
     else:
-        hotel_form = HotelForm()
+        hotel_form = HotelAddForm()
     context = {
         "form": hotel_form
     }
