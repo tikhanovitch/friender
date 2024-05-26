@@ -123,7 +123,7 @@ class BookInfoAdmin(admin.ModelAdmin):
 
 
 class HotelsCommentAdmin(admin.ModelAdmin):
-    list_display = ["hotel_rating", "hotels", "persons"]
+    list_display = ["hotels", "hotel_rating", "persons", "comment"]
 
 
 class PersonCommentAdmin(admin.ModelAdmin):

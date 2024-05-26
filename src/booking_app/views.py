@@ -2,10 +2,13 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidde
 from django.views import View
 from django.shortcuts import render
 from django.db import transaction
-from django.urls import reverse
+from django.urls import reverse_lazy
 
 from .forms import HotelModelForm, UserModelForm
-from .models import Person, Hotel, User, Booking, Room
+from .models import Person, Hotel, User, Booking, Room, HotelsComment
+from django.views.generic.base import TemplateView
+from django.views.generic.list import ListView
+from django.views.generic.edit import FormView, CreateView, DeleteView
 
 comments = [
     {
@@ -26,22 +29,46 @@ comments = [
 ]
 
 
-def user_comment_view(request):
-    context = {
-        "comments": comments
-    }
-    return render(
-        request=request,
-        template_name="user_comment.html",
-        context=context
-    )
+# def user_comment_view(request):
+#     context = {
+#         "comments": comments
+#     }
+#     return render(
+#         request=request,
+#         template_name="user_comment.html",
+#         context=context
+#     )
 
 
-def main_view(request):
-    return render(
-        request=request,
-        template_name="main.html",
-    )
+class UserCommentListView(ListView):
+    template_name = "user_comment.html"
+    model = HotelsComment
+    queryset = HotelsComment.objects.all()  # [:10]
+    context_object_name = "comments"
+    paginate_by = 5
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context["comments"] = HotelsComment.objects.all()[:10]
+    #     return context
+
+
+# def main_view(request):
+#     return render(
+#         request=request,
+#         template_name="main.html",
+#     )
+
+
+class MainTemplateView(TemplateView):
+    template_name = "main.html"
+
+
+class MainAddFormView(CreateView):
+    template_name = "user_add_form.html"
+    form_class = UserModelForm
+    # reverse_lazy = "persons"
+    success_url = "hotels"
 
 
 hotels = [
@@ -85,26 +112,34 @@ users = [
 ]
 
 
-def users_view(request):
-    context = {
-        "users": users
-    }
-    return render(
-        request=request,
-        template_name="users.html",
-        context=context
-    )
+# def users_view(request):
+#     context = {
+#         "users": users
+#     }
+#     return render(
+#         request=request,
+#         template_name="users.html",
+#         context=context
+#     )
 
 
-def persons_view(request):
-    context = {
-        "persons": Person.objects.all().prefetch_related("hotel_comments").prefetch_related("hobbies")
-    }
-    return render(
-        request=request,
-        template_name="persons.html",
-        context=context
-    )
+# def persons_view(request):
+#     context = {
+#         "persons": Person.objects.all().prefetch_related("hotel_comments").prefetch_related("hobbies")
+#     }
+#     return render(
+#         request=request,
+#         template_name="persons.html",
+#         context=context
+#     )
+
+
+class PersonListView(ListView):
+    template_name = "persons.html"
+    model = Person
+    queryset = Person.objects.all()  # [:10]
+    context_object_name = "persons"
+    paginate_by = 5
 
 
 def hotels_view(request):
@@ -125,42 +160,58 @@ def hotels_delete_view(request):
         return HttpResponse(f"<h1> {users} </h1>")
 
 
-def hotel_add(request):
-    if request.method == "POST":
-        form = HotelModelForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse("hotels"))
-    else:
-        form = HotelModelForm()
-    context = {
-        "form": form
-    }
-    return render(
-        request=request,
-        template_name="hotel_add_form.html",
-        context=context
-    )
+# def hotel_add(request):
+#     if request.method == "POST":
+#         form = HotelModelForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect(reverse("hotels"))
+#     else:
+#         form = HotelModelForm()
+#     context = {
+#         "form": form
+#     }
+#     return render(
+#         request=request,
+#         template_name="hotel_add_form.html",
+#         context=context
+#     )
 
 
-def user_add(request):
-    if request.method == "POST":
-        form = UserModelForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse("users"))
-    else:
-        form = UserModelForm()
-    context = {
-        "form": form
-    }
-    return render(
-        request=request,
-        template_name="user_add_form.html",
-        context=context
-    )
+class HotelAddFormView(CreateView):
+    template_name = "hotel_add_form.html"
+    form_class = HotelModelForm
+    # success_url = "/hotels/"
+    reverse_lazy = "hotels"
+    # def form_valid(self, form):
+    #     # This method is called when valid form data has been POSTed.
+    #     # It should return an HttpResponse.
+    #     form.send_email()
+    #     return super().form_valid(form)
 
 
+# def user_add(request):
+#     if request.method == "POST":
+#         form = UserModelForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect(reverse("users"))
+#     else:
+#         form = UserModelForm()
+#     context = {
+#         "form": form
+#     }
+#     return render(
+#         request=request,
+#         template_name="user_add_form.html",
+#         context=context
+#     )
+
+
+class UserAddFormView(CreateView):
+    template_name = "user_add_form.html"
+    form_class = UserModelForm
+    reverse_lazy = "persons"
 
 
 def book_room_view(request, hotel_id, user_id, room_number):
@@ -183,4 +234,10 @@ def book_room_view(request, hotel_id, user_id, room_number):
     room.save()
 
     return HttpResponse("Booking successful")
+
+
+# class HotelsCommentDeleteView(DeleteView):
+#     template_name = "user_comment_del.html"
+#     model = HotelsComment
+#     success_url = reverse_lazy("user_comment")
 
