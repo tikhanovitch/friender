@@ -1,7 +1,10 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+
 from django.contrib.auth.models import User
+# from booking_app.models import User
+
 from booking_app.models import HotelOwner
 from booking_app.models import Hobby
 # from .serializers import UserSerializer
@@ -89,6 +92,14 @@ class HotelOwnerApiView(APIView):
 #         serializer = HobbySerializer(hobbies, many=True)
 #         return Response(serializer.data)
 
+class HobbyListApiView(mixins.ListModelMixin, generics.GenericAPIView):
+    queryset = Hobby.objects.get(name="Photography").owners.all()
+    serializer_class = HobbyModelSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+
 # class HobbyListApiView(mixins.ListModelMixin, generics.GenericAPIView):
 #     queryset = Hobby.objects.all()
 #     serializer_class = HobbyModelSerializer
@@ -107,9 +118,3 @@ class HotelOwnerApiView(APIView):
 #         return Response({"message": "Got some data!", "data": request.data})
 #     return Response({"message": "Hello, world!"})
 
-class HobbyListApiView(mixins.ListModelMixin, generics.GenericAPIView):
-    queryset = Hobby.objects.get(name="Photography").owners.all()
-    serializer_class = HobbyModelSerializer
-
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)

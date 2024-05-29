@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'booking_rest_api.apps.BookingRestApiConfig',
     'crispy_forms',
     'crispy_bootstrap5',
+    'drf_redesign',
     'rest_framework',
 ]
 
