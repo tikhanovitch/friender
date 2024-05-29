@@ -4,9 +4,13 @@ from rest_framework import status
 from django.contrib.auth.models import User
 from booking_app.models import HotelOwner
 from booking_app.models import Hobby
-from .serializers import UserSerializer
+# from .serializers import UserSerializer
+from .serializers import UserModelSerializer
 from .serializers import HotelOwnerSerializer
-from .serializers import HobbySerializer
+# from .serializers import HobbySerializer
+from .serializers import HobbyModelSerializer
+from rest_framework import mixins
+from rest_framework import generics
 
 
 class SomeDataViewClass(APIView):
@@ -14,32 +18,42 @@ class SomeDataViewClass(APIView):
         data = {"message": "Hello, world!"}
         return Response(data)
 
+#
+# class UserApiView(APIView):
+#     def get(self, request, format=None):
+#         users = User.objects.all()
+#         serializer = UserSerializer(users, many=True)
+#         return Response(serializer.data)
+#
+#     def post(self, request, format=None):
+#         user = UserSerializer(data=request.data)
+#         if user.is_valid():
+#             user.save()
+#             return Response(user.data, status=status.HTTP_201_CREATED)
+#         return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
+#
+#     def put(self, request, pk, format=None):
+#         users = User.objects.get(pk=pk)
+#         serializer = UserSerializer(users, data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#
+#     def delete(self, request, pk, format=None):
+#         user = User.objects.get(pk=pk)
+#         user.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class UserApiView(APIView):
-    def get(self, request, format=None):
-        users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
-        return Response(serializer.data)
 
-    def post(self, request, format=None):
-        user = UserSerializer(data=request.data)
-        if user.is_valid():
-            user.save()
-            return Response(user.data, status=status.HTTP_201_CREATED)
-        return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
+class UserListApiView(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserModelSerializer
 
-    def put(self, request, pk, format=None):
-        users = User.objects.get(pk=pk)
-        serializer = UserSerializer(users, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, pk, format=None):
-        user = User.objects.get(pk=pk)
-        user.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserModelSerializer
 
 
 class HotelOwnerApiView(APIView):
@@ -69,13 +83,18 @@ class HotelOwnerApiView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class HobbyApiView(APIView):
-    def get(self, request, format=None):
-        hobbies = Hobby.objects.all()
-        serializer = HobbySerializer(hobbies, many=True)
-        return Response(serializer.data)
+# class HobbyApiView(APIView):
+#     def get(self, request, format=None):
+#         hobbies = Hobby.objects.all()
+#         serializer = HobbySerializer(hobbies, many=True)
+#         return Response(serializer.data)
 
+class HobbyListApiView(mixins.ListModelMixin, generics.GenericAPIView):
+    queryset = Hobby.objects.all()
+    serializer_class = HobbyModelSerializer
 
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
 # @api_view()
 # def hello_world(request):
