@@ -89,12 +89,12 @@ class HotelOwnerApiView(APIView):
 #         serializer = HobbySerializer(hobbies, many=True)
 #         return Response(serializer.data)
 
-class HobbyListApiView(mixins.ListModelMixin, generics.GenericAPIView):
-    queryset = Hobby.objects.all()
-    serializer_class = HobbyModelSerializer
-
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+# class HobbyListApiView(mixins.ListModelMixin, generics.GenericAPIView):
+#     queryset = Hobby.objects.all()
+#     serializer_class = HobbyModelSerializer
+#
+#     def get(self, request, *args, **kwargs):
+#         return self.list(request, *args, **kwargs)
 
 # @api_view()
 # def hello_world(request):
@@ -107,4 +107,9 @@ class HobbyListApiView(mixins.ListModelMixin, generics.GenericAPIView):
 #         return Response({"message": "Got some data!", "data": request.data})
 #     return Response({"message": "Hello, world!"})
 
+class HobbyListApiView(mixins.ListModelMixin, generics.GenericAPIView):
+    queryset = Hobby.objects.get(name="Photography").owners.all()
+    serializer_class = HobbyModelSerializer
 
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
