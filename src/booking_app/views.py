@@ -9,6 +9,8 @@ from .models import Person, Hotel, User, Booking, Room, HotelsComment
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormView, CreateView, DeleteView
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 comments = [
     {
@@ -134,7 +136,9 @@ users = [
 #     )
 
 
-class PersonListView(ListView):
+class PersonListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):  # LoginRequiredMixin запрещает просмотр
+    permission_required = ["booking_app.view.person"]     # страницы не аутентифицированным пользователям(перенаправляя
+    login_url = "/admin/login/"                           # на admin/login); PermissionRequiredMixin
     template_name = "persons.html"
     model = Person
     queryset = Person.objects.all()  # [:10]
@@ -142,7 +146,8 @@ class PersonListView(ListView):
     paginate_by = 5
 
 
-def hotels_view(request):
+@login_required(login_url="/admin/login/")  # запрещает просмотр страницы не аутентифицированным пользователям
+def hotels_view(request):                   # (перенаправляя на admin/login)
     context = {
         "hotels": Hotel.objects.all()
     }

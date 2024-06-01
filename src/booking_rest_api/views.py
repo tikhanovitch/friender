@@ -14,6 +14,8 @@ from .serializers import HotelOwnerSerializer
 from .serializers import HobbyModelSerializer
 from rest_framework import mixins
 from rest_framework import generics
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 class SomeDataViewClass(APIView):
@@ -50,6 +52,8 @@ class SomeDataViewClass(APIView):
 
 
 class UserListApiView(generics.ListCreateAPIView):
+    authentication_classes = [TokenAuthentication]  # SessionAuthentication, BasicAuthentication
+    permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = UserModelSerializer
 
