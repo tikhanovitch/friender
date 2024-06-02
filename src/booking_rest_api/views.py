@@ -52,7 +52,7 @@ class SomeDataViewClass(APIView):
 
 
 class UserListApiView(generics.ListCreateAPIView):
-    authentication_classes = [TokenAuthentication]  # SessionAuthentication, BasicAuthentication
+    authentication_classes = [SessionAuthentication, BasicAuthentication]  # SessionAuthentication, BasicAuthentication # TokenAuthentication
     permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = UserModelSerializer

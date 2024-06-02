@@ -3,6 +3,8 @@
 {% block title %} Hotels {% endblock %}
 
 {% block content %}
+{% load cache %}
+{% cache 60 sidebar %}
 
     <h2> Hotels info </h2>
 
@@ -35,5 +37,5 @@
 
   </tbody>
 </table>
-
+{% endcache %}
 {% endblock %}

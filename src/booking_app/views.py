@@ -11,6 +11,7 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import FormView, CreateView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.views.decorators.cache import cache_page
 
 comments = [
     {
@@ -146,6 +147,7 @@ class PersonListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):  # 
     paginate_by = 5
 
 
+# @cache_page(timeout=60)
 @login_required(login_url="/admin/login/")  # запрещает просмотр страницы не аутентифицированным пользователям
 def hotels_view(request):                   # (перенаправляя на admin/login)
     context = {
