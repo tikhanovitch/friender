@@ -64,6 +64,8 @@ class Hotel(models.Model):
     address = models.CharField(max_length=40, null=True)
     stars = models.IntegerField(null=True, validators=[validate_hotel_stars])
     rating = models.FloatField(null=True)
+    description = models.CharField(max_length=255, null=True)
+    photo = models.ImageField(null=True, upload_to="hotels_photo/")
     owners = models.ForeignKey(
         to="HotelOwner",
         on_delete=models.SET_NULL,

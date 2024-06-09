@@ -10,7 +10,7 @@
 
     <h2> add hotel </h2>
 
-    <form action="/booking/hotel_add_form" method="POST">
+    <form enctype="multipart/form-data" action="/booking/hotel_add_form" method="POST">
         {% csrf_token %}
         {{ form |crispy }}
 <!--    <label for="hotel_name">hotel name: </label>-->

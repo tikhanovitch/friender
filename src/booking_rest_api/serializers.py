@@ -1,8 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from booking_app.models import HotelOwner
-# from booking_app.models import HotelOwner
 from booking_app.models import Hobby
+# from booking_app.models import HotelOwner
 
 
 # class UserSerializer(serializers.Serializer):
@@ -26,7 +26,7 @@ from booking_app.models import Hobby
 class UserModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["username", 'first_name', 'last_name', 'email']
+        fields = ["username", 'first_name', 'last_name', 'email', 'is_superuser', 'is_staff']
 
 
 class HotelOwnerSerializer(serializers.Serializer):
@@ -61,13 +61,13 @@ class HotelOwnerSerializer(serializers.Serializer):
 #         return instance
 
 
-# class HobbyModelSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Hobby
-#         fields = ["name", "detail"]
-
-
 class HobbyModelSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ["first_name", "last_name"]
+        model = Hobby
+        fields = ["name", "detail"]
+
+
+# class HobbyModelSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = User
+#         fields = ["first_name", "last_name"]

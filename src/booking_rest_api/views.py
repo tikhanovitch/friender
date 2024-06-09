@@ -1,21 +1,24 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework import mixins
+from rest_framework import generics
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.filters import SearchFilter, OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
 
 from django.contrib.auth.models import User
 # from booking_app.models import User
-
 from booking_app.models import HotelOwner
 from booking_app.models import Hobby
+from .paginations import FiveResultsSetPagination
+
 # from .serializers import UserSerializer
 from .serializers import UserModelSerializer
 from .serializers import HotelOwnerSerializer
 # from .serializers import HobbySerializer
 from .serializers import HobbyModelSerializer
-from rest_framework import mixins
-from rest_framework import generics
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
 
 
 class SomeDataViewClass(APIView):
@@ -56,6 +59,11 @@ class UserListApiView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = UserModelSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['username', 'first_name', 'is_superuser', 'is_staff']
+    search_fields = ['username', 'first_name', 'last_name', 'email']
+    ordering_fields = ['username', 'first_name', 'last_name']
+    ordering = ['username']
 
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -63,7 +71,15 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserModelSerializer
 
 
+# class HotelOwnerListApiView(generics.ListCreateAPIView):
+#     queryset = HotelOwner.objects.all()
+#     filter_backends = [DjangoFilterBackend, SearchFilter]
+#     filterset_fields = ['first_name', 'last_name', 'age', 'sex']
+#     search_fields = ['first_name', 'last_name', 'age', 'sex']
+
 class HotelOwnerApiView(APIView):
+    queryset = HotelOwner.objects.all()
+
     def get(self, request, format=None):
         owners = HotelOwner.objects.all()
         serializer = HotelOwnerSerializer(owners, many=True)
@@ -96,9 +112,16 @@ class HotelOwnerApiView(APIView):
 #         serializer = HobbySerializer(hobbies, many=True)
 #         return Response(serializer.data)
 
+
 class HobbyListApiView(mixins.ListModelMixin, generics.GenericAPIView):
-    queryset = Hobby.objects.get(name="Photography").owners.all()
+    queryset = Hobby.objects.all()
     serializer_class = HobbyModelSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['name', 'detail']
+    search_fields = ['name', 'detail']
+    ordering_fields = ['name']
+    ordering = ['name']
+    pagination_class = FiveResultsSetPagination
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)

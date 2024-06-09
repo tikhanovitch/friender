@@ -1,10 +1,17 @@
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 from .models import (
     User, Person, HotelOwner,
     Profile, Hotel, BookInfo,
     HotelsComment, PersonComment,
     Hobby, Room, Booking,
 )
+
+
+@admin.display(description='фото')
+def get_html_photo(objects):
+    if objects.photo:
+        return mark_safe(f'<img src={objects.photo.url} width=50>')
 
 #  _____Inlines_____
 
@@ -105,8 +112,8 @@ class ProfileAdmin(admin.ModelAdmin):
 
 class HotelAdmin(admin.ModelAdmin):
     list_display = [
-        "name", "address", "stars",
-        "rating", "owners",
+        "name", "address", "stars", "rating",
+        "owners", "description", get_html_photo,
     ]
     inlines = [
         BookInfoInline,

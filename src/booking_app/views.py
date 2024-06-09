@@ -2,7 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidde
 from django.views import View
 from django.shortcuts import render
 from django.db import transaction
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 from .forms import HotelModelForm, UserModelForm
 from .models import Person, Hotel, User, Booking, Room, HotelsComment
@@ -48,7 +48,7 @@ class UserCommentListView(ListView):
     model = HotelsComment
     queryset = HotelsComment.objects.all()  # [:10]
     context_object_name = "comments"
-    paginate_by = 5
+    paginate_by = 3
 
     # def get_context_data(self, **kwargs):
     #     context = super().get_context_data(**kwargs)
@@ -167,34 +167,34 @@ def hotels_delete_view(request):
         return HttpResponse(f"<h1> {users} </h1>")
 
 
-# def hotel_add(request):
-#     if request.method == "POST":
-#         form = HotelModelForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return HttpResponseRedirect(reverse("hotels"))
-#     else:
-#         form = HotelModelForm()
-#     context = {
-#         "form": form
-#     }
-#     return render(
-#         request=request,
-#         template_name="hotel_add_form.html",
-#         context=context
-#     )
+def hotel_add(request):
+    if request.method == "POST":
+        form = HotelModelForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse("hotels"))
+    else:
+        form = HotelModelForm()
+    context = {
+        "form": form
+    }
+    return render(
+        request=request,
+        template_name="hotel_add_form.html",
+        context=context
+    )
 
 
-class HotelAddFormView(CreateView):
-    template_name = "hotel_add_form.html"
-    form_class = HotelModelForm
-    # success_url = "/hotels/"
-    reverse_lazy = "hotels"
-    # def form_valid(self, form):
-    #     # This method is called when valid form data has been POSTed.
-    #     # It should return an HttpResponse.
-    #     form.send_email()
-    #     return super().form_valid(form)
+# class HotelAddFormView(CreateView):
+#     template_name = "hotel_add_form.html"
+#     form_class = HotelModelForm
+#     # success_url = "/hotels/"
+#     reverse_lazy = "hotels"
+#     # def form_valid(self, form):
+#     #     # This method is called when valid form data has been POSTed.
+#     #     # It should return an HttpResponse.
+#     #     form.send_email()
+#     #     return super().form_valid(form)
 
 
 # def user_add(request):
