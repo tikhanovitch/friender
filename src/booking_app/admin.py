@@ -105,7 +105,7 @@ class HotelOwnerAdmin(admin.ModelAdmin):
 class ProfileAdmin(admin.ModelAdmin):
     pass
     list_display = [
-        "person_id", "photo",
+        "person_id", get_html_photo,
         "serial", "id_card_number",
     ]
 

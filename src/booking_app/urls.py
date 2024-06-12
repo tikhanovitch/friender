@@ -14,6 +14,7 @@ from .views import (
     PersonListView,
     # HotelAddFormView,
     UserAddFormView,
+    profile_add,
 )
 
 urlpatterns = [
@@ -28,4 +29,5 @@ urlpatterns = [
     # path('hotel_add_form', HotelAddFormView.as_view(), name="hotel_add_form"),
     # path('user_add_form', user_add, name="user_add_form"),
     path('user_add_form', UserAddFormView.as_view(), name="user_add_form"),
+    path('profile_add_form', profile_add, name="profile_add_form"),
 ]

@@ -4,8 +4,8 @@ from django.shortcuts import render
 from django.db import transaction
 from django.urls import reverse_lazy, reverse
 
-from .forms import HotelModelForm, UserModelForm
-from .models import Person, Hotel, User, Booking, Room, HotelsComment
+from .forms import HotelModelForm, UserModelForm, ProfileModelForm
+from .models import Person, Hotel, User, Booking, Room, HotelsComment, Profile
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormView, CreateView, DeleteView
@@ -242,6 +242,23 @@ def book_room_view(request, hotel_id, user_id, room_number):
 
     return HttpResponse("Booking successful")
 
+
+def profile_add(request):
+    if request.method == "POST":
+        form = ProfileModelForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse("persons"))
+    else:
+        form = ProfileModelForm()
+    context = {
+        "form": form
+    }
+    return render(
+        request=request,
+        template_name="profile_add_form.html",
+        context=context
+    )
 
 # class HotelsCommentDeleteView(DeleteView):
 #     template_name = "user_comment_del.html"

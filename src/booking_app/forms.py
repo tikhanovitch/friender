@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Hotel, User
+from .models import Hotel, User, Profile
 
 
 # class HotelAddForm (forms.Form):
@@ -17,7 +17,12 @@ class HotelModelForm(forms.ModelForm):
 
 
 class UserModelForm(forms.ModelForm):
-
     class Meta:
         model = User
         fields = ["first_name", "last_name", "age", "sex"]
+
+
+class ProfileModelForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ["photo", "id_card_number", "serial"]

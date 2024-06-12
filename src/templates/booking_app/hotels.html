@@ -18,20 +18,19 @@
   </thead>
 
   <tbody>
-  {% for hotel in hotels %}
+    {% for hotel in hotels %}
     <tr>
       <td>{{hotel.name}}</td>
       <td>{{hotel.address}}</td>
       <td>{{hotel.stars}}</td>
       <td>{{hotel.description}}</td>
-      <td>{{hotel.photo}}</td>
       <td>
-    {% if hotel.photo %}
-        <img style="max-height: 100px" src="{{ hotel.photo.url }}"/>
-    {% endif %}
+        {% if hotel.photo %}
+          <img style="max-height: 100px" src="{{ hotel.photo.url }}"/>
+        {% endif %}
       </td>
     </tr>
-  {% endfor %}
+    {% endfor %}
 
   </tbody>
 

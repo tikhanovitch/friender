@@ -42,7 +42,7 @@ class HotelOwner(User):
 
 
 class Profile(models.Model):
-    photo = models.ImageField(null=True, blank=True)  # ,verbose_name="Фотография"
+    photo = models.ImageField(null=True, blank=True, upload_to="user_photo/")  # ,verbose_name="Фотография"
     id_card_number = models.IntegerField(null=True, verbose_name="Номер паспорта")
     serial = models.CharField(max_length=30, null=True, verbose_name="Серия паспорта")
     person_id = models.OneToOneField(
