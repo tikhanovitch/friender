@@ -1,14 +1,14 @@
-% extends "base.html" %}
+{% extends "base.html" %}
 
 {% load static %}
 
 {% load crispy_forms_tags %}
 
-{% block title %} Add hotel page {% endblock %}
+{% block title %} Add profile {% endblock %}
 
 {% block content %}
 
-    <h2> add hotel </h2>
+    <h2> Add profile </h2>
 
     <form enctype="multipart/form-data" action="/booking/profile_add_form" method="POST">
         {% csrf_token %}

@@ -25,4 +25,5 @@ class UserModelForm(forms.ModelForm):
 class ProfileModelForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ["photo", "id_card_number", "serial"]
+        fields = ["person_id", "id_card_number", "serial", "photo"]
+

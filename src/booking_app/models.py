@@ -209,4 +209,15 @@ class Booking(models.Model):
         return f" {self.start_date} {self.end_date}"
 
 
+class PersonQueue(models.Model):
+    value = models.PositiveIntegerField(null=True)
 
+    def __str__(self):
+        return f" {self.value} "
+
+
+class Queue(models.Model):
+    queue = models.PositiveIntegerField(null=True)
+
+    def __str__(self):
+        return f" {self.queue} "
