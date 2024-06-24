@@ -72,7 +72,7 @@ import random
 #_____________________________________________________________
 
 
-class TestUniqueQueue(unittest.TestCase):
+class TestUniqueQueue(TestCase):
     def test_unique_queue_exist(self):
         queue = UniqueQueue(strategy="LIFO")
 
@@ -107,38 +107,40 @@ class TestUniqueQueue(unittest.TestCase):
         self.assertEqual(queue.len_queue(), test_len)
         self.assertEqual(queue.last_item_in_queue(), first_item)
 
-    # def test_add_unique_items(self):
-    #     queue = UniqueQueue(strategy="LIFO")
-    #     first_item = 24
-    #     second_item = 25
-    #     test_len = 2
-    #     queue.add(first_item)
-    #     queue.add(second_item)
-    #     self.assertEqual(queue.len_queue(), test_len)
-    #     self.assertEqual(queue.last_item_in_queue(), second_item)
-    #
-    # def test_pop_lifo_strategy(self):
-    #     queue = UniqueQueue(strategy="LIFO")
-    #     first_item = 24
-    #     second_item = 25
-    #     test_len = 1
-    #     queue.add(first_item)
-    #     queue.add(second_item)
-    #     popped_item = queue.pop()
-    #     self.assertEqual(popped_item, second_item)
-    #     self.assertEqual(queue.len_queue(), test_len)
-    #     self.assertEqual(queue.last_item_in_queue(), first_item)
-    #
-    # def test_empty_queue_pop(self):
-    #     queue = UniqueQueue(strategy="LIFO")
-    #     queue.pop()
-    #     self.assertIsNone(queue.last_item_in_queue())
-    #
-    # def test_last_item_in_queue_where_last_item_null(self):
-    #     queue = UniqueQueue(strategy="LIFO")
-    #     self.assertIsNone(queue.last_item_in_queue())
+    def test_add_unique_items(self):
+        queue = UniqueQueue(strategy="LIFO")
+        first_item = 24
+        second_item = 25
+        test_len = 2
+        queue.add(first_item)
+        queue.add(second_item)
+        self.assertEqual(queue.len_queue(), test_len)
+        self.assertEqual(queue.last_item_in_queue(), second_item)
+
+    def test_pop_lifo_strategy(self):
+        queue = UniqueQueue(strategy="LIFO")
+        first_item = 24
+        second_item = 25
+        test_len = 1
+        queue.add(first_item)
+        queue.add(second_item)
+        popped_item = queue.pop()
+        self.assertEqual(popped_item, second_item)
+        self.assertEqual(queue.len_queue(), test_len)
+        self.assertEqual(queue.last_item_in_queue(), first_item)
+
+    def test_empty_queue_pop(self):
+        queue = UniqueQueue(strategy="LIFO")
+        queue.pop()
+        self.assertIsNone(queue.last_item_in_queue())
+
+    def test_last_item_in_queue_where_last_item_null(self):
+        queue = UniqueQueue(strategy="LIFO")
+        self.assertIsNone(queue.last_item_in_queue())
 
     def test_len_queue_without_items(self):
         queue = UniqueQueue(strategy="LIFO")
         test_len = 0
         self.assertEqual(queue.len_queue(), test_len)
+
+

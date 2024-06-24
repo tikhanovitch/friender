@@ -153,6 +153,8 @@ def hotels_view(request):                   # (перенаправляя на a
     context = {
         "hotels": Hotel.objects.all()
     }
+    from config.celery import debug_task
+    debug_task.delay(15)
     return render(
         request=request,
         template_name="hotels.html",
